@@ -18,7 +18,12 @@ workflows:
         script: keychain initialize
 
       - name: Set up code signing settings
-        script: xcode-project use-profiles
+        script: |
+          xcode-project use-profiles --project "LSSign.xcodeproj"
+
+      - name: Verify build settings
+        script: |
+          xcodebuild -project LSSign.xcodeproj -scheme LSSign -showBuildSettings | grep PRODUCT_BUNDLE_IDENTIFIER
 
       - name: Build IPA
         script: |
