@@ -6,8 +6,6 @@ workflows:
     environment:
       groups:
         - manual_code_signing
-      vars:
-        BUNDLE_ID: "app.lemon2974.peach9464"
     scripts:
       - name: Install XcodeGen
         script: brew install xcodegen
@@ -38,5 +36,6 @@ workflows:
           xcode-project build-ipa \
             --project "LSSign.xcodeproj" \
             --scheme "LSSign"
+
     artifacts:
       - build/ios/ipa/*.ipa
