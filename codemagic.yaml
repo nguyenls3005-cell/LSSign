@@ -30,7 +30,7 @@ workflows:
           xcode-project build-ipa \
             --project "LSSign.xcodeproj" \
             --scheme "LSSign" \
-            --archive-flags="-destination 'generic/platform=iOS'"
+            --export-options-plist "ExportOptions.plist"
 
     artifacts:
       - build/ios/ipa/*.ipa
