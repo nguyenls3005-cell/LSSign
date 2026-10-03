@@ -5,8 +5,6 @@ workflows:
     max_build_duration: 60
     environment:
       ios_signing:
-        distribution_type: ad_hoc
-        bundle_identifier: app.lemon2974.peach9464
         provisioning_profiles:
           - LsnProfile
         certificates:
