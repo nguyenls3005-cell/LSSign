@@ -1,6 +1,5 @@
 name: LSSign
 options:
-  bundleIdPrefix: app.lemon2974.peach9464
   deploymentTarget:
     iOS: "17.0"
 packages:
@@ -19,3 +18,5 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.lemon2974.peach9464
         INFOPLIST_FILE: Sources/LSSign/Info.plist
+        DEVELOPMENT_TEAM: 5GTB5N9N33
+        CODE_SIGN_STYLE: Manual
