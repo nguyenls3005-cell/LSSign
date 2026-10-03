@@ -24,8 +24,7 @@ workflows:
         script: |
           xcode-project build-ipa \
             --project "LSSign.xcodeproj" \
-            --scheme "LSSign" \
-            --archive-flags="-destination 'generic/platform=iOS'"
+            --scheme "LSSign"
 
     artifacts:
       - build/ios/ipa/*.ipa
