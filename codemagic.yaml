@@ -19,19 +19,21 @@ workflows:
 
       - name: Set up code signing settings
         script: |
-          xcode-project use-profiles --project "LSSign.xcodeproj"
+          xcode-project use-profiles \
+            --project "LSSign.xcodeproj" \
+            --export-options-plist=/Users/builder/export_options.plist
 
-      - name: Verify export options file
+      - name: Verify export options
         script: |
-          echo "=== Checking for export_options.plist ==="
-          find /Users/builder -name "export_options.plist" 2>/dev/null || echo "Not found in /Users/builder"
-          ls -la /Users/builder/Library/MobileDevice/Provisioning\ Profiles/ 2>/dev/null || echo "No profiles dir"
+          echo "=== Export options content ==="
+          cat /Users/builder/export_options.plist || echo "File not found"
 
       - name: Build IPA
         script: |
           xcode-project build-ipa \
             --project "LSSign.xcodeproj" \
             --scheme "LSSign" \
+            --export-options-plist=/Users/builder/export_options.plist \
             --verbose
 
     artifacts:
