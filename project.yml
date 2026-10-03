@@ -14,6 +14,12 @@ targets:
     dependencies:
       - package: zsign
         product: Zupersign
+    entitlements:
+      path: Sources/LSSign/LSSign.entitlements
+      properties:
+        application-identifier: 5GTB5N9N33.app.lemon2974.peach9464
+        com.apple.developer.team-identifier: 5GTB5N9N33
+        get-task-allow: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.lemon2974.peach9464
