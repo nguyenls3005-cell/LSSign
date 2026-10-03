@@ -17,18 +17,11 @@ workflows:
       - name: Initialize keychain
         script: keychain initialize
 
-      - name: Install provisioning profile manually
-        script: |
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          find /Users/builder -name "*.mobileprovision" 2>/dev/null
-          cp /Users/builder/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision \
-             ~/Library/MobileDevice/Provisioning\ Profiles/ 2>/dev/null || echo "No source profile found"
-          ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
-
       - name: Set up code signing settings
         script: |
           xcode-project use-profiles \
             --project "LSSign.xcodeproj" \
+            --profile '~/Library/Developer/Xcode/UserData/Provisioning Profiles/*.mobileprovision' \
             --export-options-plist=/Users/builder/export_options.plist
 
       - name: Build IPA
@@ -37,7 +30,7 @@ workflows:
             --project "LSSign.xcodeproj" \
             --scheme "LSSign" \
             --export-options-plist=/Users/builder/export_options.plist \
-            --verbose
+            --archive-flags="-destination 'generic/platform=iOS'"
 
     artifacts:
       - build/ios/ipa/*.ipa
