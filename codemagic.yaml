@@ -20,7 +20,7 @@ workflows:
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles \
-            --export-options-plist=/Users/builder/export_options.plist \
+            --export-options-plist /Users/builder/export_options.plist \
             --profile '~/Library/Developer/Xcode/UserData/Provisioning Profiles/*.mobileprovision'
 
       - name: Build IPA
