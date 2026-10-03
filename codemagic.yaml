@@ -1,22 +1,42 @@
 workflows:
-  ios-xtool-build:
+  ios-xcodegen-build:
     name: Build LSSign
     instance_type: mac_mini_m2
     max_build_duration: 60
     environment:
-      ios_signing:
-        distribution_type: ad_hoc
-        bundle_identifier: app.lemon2974.peach9464
+      groups:
+        - manual_code_signing
+      vars:
+        BUNDLE_ID: "app.lemon2974.peach9464"
     scripts:
+      - name: Install XcodeGen
+        script: brew install xcodegen
+
+      - name: Generate Xcode project
+        script: xcodegen generate
+
       - name: Initialize keychain
         script: keychain initialize
-      - name: Fetch signing files
-        script: xcode-project use-profiles
-      - name: Install xtool
+
+      - name: Set up provisioning profile
         script: |
-          curl -fsSL https://xtool.sh/install.sh | sh
-          export PATH="$HOME/.xtool/bin:$PATH"
+          PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROFILES_HOME"
+          PROFILE_PATH="$(mktemp "$PROFILES_HOME"/$(uuidgen).mobileprovision)"
+          echo ${CM_PROVISIONING_PROFILE} | base64 --decode > "$PROFILE_PATH"
+
+      - name: Add signing certificate
+        script: |
+          echo $CM_CERTIFICATE | base64 --decode > /tmp/certificate.p12
+          keychain add-certificates --certificate /tmp/certificate.p12 --certificate-password $CM_CERTIFICATE_PASSWORD
+
+      - name: Set up code signing settings
+        script: xcode-project use-profiles
+
       - name: Build IPA
-        script: xtool dev build --ipa
+        script: |
+          xcode-project build-ipa \
+            --project "LSSign.xcodeproj" \
+            --scheme "LSSign"
     artifacts:
       - build/ios/ipa/*.ipa
