@@ -4,8 +4,9 @@ workflows:
     instance_type: mac_mini_m2
     max_build_duration: 60
     environment:
-      groups:
-        - manual_code_signing
+      ios_signing:
+        distribution_type: ad_hoc
+        bundle_identifier: app.lemon2974.peach9464
     scripts:
       - name: Install XcodeGen
         script: brew install xcodegen
@@ -15,19 +16,6 @@ workflows:
 
       - name: Initialize keychain
         script: keychain initialize
-
-      - name: Set up provisioning profile
-        script: |
-          PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
-          mkdir -p "$PROFILES_HOME"
-          PROFILE_PATH="$(mktemp "$PROFILES_HOME"/$(uuidgen).mobileprovision)"
-          echo ${CM_PROVISIONING_PROFILE} | base64 --decode > "$PROFILE_PATH"
-          echo "Saved provisioning profile $PROFILE_PATH"
-
-      - name: Add signing certificate
-        script: |
-          echo $CM_CERTIFICATE | base64 --decode > /tmp/certificate.p12
-          keychain add-certificates --certificate /tmp/certificate.p12 --certificate-password $CM_CERTIFICATE_PASSWORD
 
       - name: Set up code signing settings on Xcode project
         script: xcode-project use-profiles
