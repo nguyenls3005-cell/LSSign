@@ -18,7 +18,10 @@ workflows:
         script: keychain initialize
 
       - name: Set up code signing settings on Xcode project
-        script: xcode-project use-profiles
+        script: |
+          xcode-project use-profiles \
+            --export-options-plist=/Users/builder/export_options.plist \
+            --profile '~/Library/Developer/Xcode/UserData/Provisioning Profiles/*.mobileprovision'
 
       - name: Build IPA
         script: |
@@ -26,7 +29,8 @@ workflows:
             --project "LSSign.xcodeproj" \
             --scheme "LSSign" \
             --archive-flags "-destination 'generic/platform=iOS'" \
-            --archive-xcargs "CODE_SIGNING_REQUIRED=YES CODE_SIGNING_ALLOWED=NO"
+            --archive-xcargs "CODE_SIGNING_REQUIRED=YES CODE_SIGNING_ALLOWED=NO" \
+            --export-options-plist /Users/builder/export_options.plist
 
     artifacts:
       - build/ios/ipa/*.ipa
