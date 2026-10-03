@@ -19,6 +19,7 @@ workflows:
       - name: Set up code signing settings
         script: |
           xcode-project use-profiles \
+            --project "LSSign.xcodeproj" \
             --profile '~/Library/Developer/Xcode/UserData/Provisioning Profiles/*.mobileprovision'
       - name: Build IPA
         script: |
