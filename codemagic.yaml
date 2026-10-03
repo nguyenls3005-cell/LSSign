@@ -7,6 +7,10 @@ workflows:
       ios_signing:
         distribution_type: ad_hoc
         bundle_identifier: app.lemon2974.peach9464
+        provisioning_profiles:
+          - LsnProfile
+        certificates:
+          - LsnCert
     scripts:
       - name: Install XcodeGen
         script: brew install xcodegen
