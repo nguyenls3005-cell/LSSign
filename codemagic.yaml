@@ -21,16 +21,18 @@ workflows:
         script: |
           xcode-project use-profiles --project "LSSign.xcodeproj"
 
-      - name: Verify bundle ID
+      - name: Verify export options file
         script: |
-          xcodebuild -project LSSign.xcodeproj -scheme LSSign -showBuildSettings | grep PRODUCT_BUNDLE_IDENTIFIER
+          echo "=== Checking for export_options.plist ==="
+          find /Users/builder -name "export_options.plist" 2>/dev/null || echo "Not found in /Users/builder"
+          ls -la /Users/builder/Library/MobileDevice/Provisioning\ Profiles/ 2>/dev/null || echo "No profiles dir"
 
       - name: Build IPA
         script: |
           xcode-project build-ipa \
             --project "LSSign.xcodeproj" \
             --scheme "LSSign" \
-            --export-options-plist "ExportOptions.plist"
+            --verbose
 
     artifacts:
       - build/ios/ipa/*.ipa
