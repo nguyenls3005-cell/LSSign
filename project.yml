@@ -1,0 +1,21 @@
+name: LSSign
+options:
+  bundleIdPrefix: app.lemon2974.peach9464
+  deploymentTarget:
+    iOS: "17.0"
+packages:
+  zsign:
+    url: https://github.com/xtool-org/zsign
+    from: 1.0.0
+targets:
+  LSSign:
+    type: application
+    platform: iOS
+    sources: [Sources/LSSign]
+    dependencies:
+      - package: zsign
+        product: Zupersign
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.lemon2974.peach9464
+        INFOPLIST_FILE: Sources/LSSign/Info.plist
